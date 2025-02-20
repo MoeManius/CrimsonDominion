@@ -1,14 +1,16 @@
 from fastapi import FastAPI
 from users.endpoints import router as users_router
+from planets.endpoints import router as planets_router
 
 app = FastAPI()
 
+# Include Routers
 app.include_router(users_router, prefix="/users", tags=["users"])
+app.include_router(planets_router, prefix="/planets", tags=["planets"])
 
 @app.get("/")
-def read_root():
-    return {"message": "Welcome to CrimsonDominion API!"}
-
+def root():
+    return {"message": "Welcome to the Crimson Dominion API"}
 
 if __name__ == "__main__":
     import uvicorn
