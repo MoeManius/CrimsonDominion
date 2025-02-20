@@ -1,24 +1,14 @@
-import os
-import psycopg
 from fastapi import FastAPI
-from dotenv import load_dotenv
-
-load_dotenv()
-
-DATABASE_URL = os.getenv("DATABASE_URL")
-
-try:
-    conn = psycopg.connect(DATABASE_URL)
-    cursor = conn.cursor()
-    print("Connected to the database successfully")
-except Exception as e:
-    print(f"Database connection failed: {e}")
+from users.endpoints import router as users_router
 
 app = FastAPI()
 
+app.include_router(users_router, prefix="/users", tags=["users"])
+
 @app.get("/")
 def read_root():
-    return {"message": "Crimson Dominion server is running!"}
+    return {"message": "Welcome to CrimsonDominion API!"}
+
 
 if __name__ == "__main__":
     import uvicorn
