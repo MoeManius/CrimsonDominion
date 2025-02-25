@@ -21,7 +21,6 @@ def connect_to_db():
         print(f"Error connecting to database: {e}")
         return None
 
-# Helper function to fetch user by ID
 def get_user_by_id(user_id: str):
     conn = connect_to_db()
     if conn:
@@ -38,7 +37,7 @@ router = APIRouter()
 def create_user(user: User):
     conn = connect_to_db()
     if conn:
-        user_id = str(uuid4())  # generate a unique ID for the user
+        user_id = str(uuid4())
         with conn.cursor() as cursor:
             cursor.execute("""
                 INSERT INTO users (id, username, email, password_hash) 

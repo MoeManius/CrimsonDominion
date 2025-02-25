@@ -24,7 +24,6 @@ def connect_to_db():
         print(f"Error connecting to database: {e}")
         return None
 
-# Helper function to fetch planet by ID
 def get_planet_by_id(planet_id: str):
     conn = connect_to_db()
     if conn:
@@ -41,7 +40,7 @@ router = APIRouter()
 def create_planet(planet: Planet):
     conn = connect_to_db()
     if conn:
-        planet_id = str(uuid4())  # generate a unique ID for the planet
+        planet_id = str(uuid4())
         resources_json = json.dumps(planet.resources)
 
         with conn.cursor() as cursor:

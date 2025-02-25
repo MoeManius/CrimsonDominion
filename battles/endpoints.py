@@ -8,7 +8,7 @@ class Battle(BaseModel):
     attacker_id: str
     defender_id: str
     planet_id: str
-    battle_log: dict  # JSON field
+    battle_log: dict
 
 def connect_to_db():
     from dotenv import load_dotenv
@@ -29,7 +29,7 @@ router = APIRouter()
 def create_battle(battle: Battle):
     conn = connect_to_db()
     if conn:
-        battle_id = str(uuid4())  # Generate a unique battle ID
+        battle_id = str(uuid4())
         with conn.cursor() as cursor:
             cursor.execute("""
                 INSERT INTO battles (id, attacker_id, defender_id, planet_id, battle_log) 

@@ -38,7 +38,7 @@ router = APIRouter()
 def create_user_fleet(user_fleet: UserFleet):
     conn = connect_to_db()
     if conn:
-        user_fleet_id = str(uuid4())  # Generate unique ID
+        user_fleet_id = str(uuid4())
         with conn.cursor() as cursor:
             cursor.execute("""
                 INSERT INTO user_fleets (id, user_id, planet_id, ships) 

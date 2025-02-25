@@ -6,7 +6,7 @@ from uuid import uuid4
 class Building(BaseModel):
     name: str
     type: str
-    resource_cost: dict  # JSON format for resource cost
+    resource_cost: dict
 
 def connect_to_db():
     from dotenv import load_dotenv
@@ -21,7 +21,6 @@ def connect_to_db():
         print(f"Error connecting to database: {e}")
         return None
 
-# Helper function to fetch building by ID
 def get_building_by_id(building_id: str):
     conn = connect_to_db()
     if conn:
@@ -38,7 +37,7 @@ router = APIRouter()
 def create_building(building: Building):
     conn = connect_to_db()
     if conn:
-        building_id = str(uuid4())  # Generate unique ID
+        building_id = str(uuid4())
         with conn.cursor() as cursor:
             cursor.execute("""
                 INSERT INTO buildings (id, name, type, resource_cost) 
