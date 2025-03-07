@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 import psycopg
 from pydantic import BaseModel
 from uuid import uuid4
-from psycopg.types.json import Json  # Ensure JSON compatibility
+from psycopg.types.json import Json
 
 class Battle(BaseModel):
     attacker_id: str
