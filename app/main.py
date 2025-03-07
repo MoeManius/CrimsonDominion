@@ -10,7 +10,6 @@ from auth.endpoints import router as auth_router
 
 app = FastAPI()
 
-# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -19,7 +18,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include all routers
 app.include_router(users_router, prefix="/users", tags=["Users"])
 app.include_router(planets_router, prefix="/planets", tags=["Planets"])
 app.include_router(buildings_router, prefix="/buildings", tags=["Buildings"])
