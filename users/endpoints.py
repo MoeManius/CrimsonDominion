@@ -1,94 +1,66 @@
-from fastapi import APIRouter, HTTPException
-import psycopg
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
-from uuid import uuid4
-
-class User(BaseModel):
-    username: str
-    email: str
-    password_hash: str
-
-def connect_to_db():
-    from dotenv import load_dotenv
-    import os
-    load_dotenv()
-    DATABASE_URL = os.getenv("DATABASE_URL")
-
-    try:
-        conn = psycopg.connect(DATABASE_URL)
-        return conn
-    except Exception as e:
-        print(f"Error connecting to database: {e}")
-        return None
-
-def get_user_by_id(user_id: str):
-    conn = connect_to_db()
-    if conn:
-        with conn.cursor() as cursor:
-            cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
-            user = cursor.fetchone()
-        conn.close()
-        return user
-    return None
+from auth.endpoints import get_current_user
+from database.database import connect_to_db, get_user_by_id
 
 router = APIRouter()
 
-@router.post("/")
-def create_user(user: User):
-    conn = connect_to_db()
-    if conn:
-        user_id = str(uuid4())
-        with conn.cursor() as cursor:
-            cursor.execute("""
-                INSERT INTO users (id, username, email, password_hash) 
-                VALUES (%s, %s, %s, %s) 
-                RETURNING id;
-            """, (user_id, user.username, user.email, user.password_hash))
-            conn.commit()
-        conn.close()
-        return {"id": user_id, "username": user.username, "email": user.email}
-    raise HTTPException(status_code=500, detail="Error creating user.")
-
-@router.get("/{user_id}")
-def read_user(user_id: str):
-    user = get_user_by_id(user_id)
-    if user:
-        return {"id": user[0], "username": user[1], "email": user[2], "created_at": user[4]}
-    raise HTTPException(status_code=404, detail="User not found")
+class UserUpdate(BaseModel):
+    username: str
+    email: str
 
 @router.get("/")
-def read_all_users():
+def read_all_users(current_user: dict = Depends(get_current_user)):
     conn = connect_to_db()
-    if conn:
-        with conn.cursor() as cursor:
-            cursor.execute("SELECT * FROM users")
-            users = cursor.fetchall()
-        conn.close()
-        return [{"id": user[0], "username": user[1], "email": user[2], "created_at": user[4]} for user in users]
-    raise HTTPException(status_code=500, detail="Error fetching users.")
+    if not conn:
+        raise HTTPException(status_code=500, detail="Database connection failed")
+
+    with conn.cursor() as cursor:
+        cursor.execute("SELECT id, username, email, created_at FROM users")
+        users = cursor.fetchall()
+    conn.close()
+
+    return [{"id": str(user[0]), "username": user[1], "email": user[2], "created_at": user[3]} for user in users]
+
+@router.get("/{user_id}")
+def read_user(user_id: str, current_user: dict = Depends(get_current_user)):
+    user = get_user_by_id(user_id)
+    if user:
+        return {"id": str(user[0]), "username": user[1], "email": user[2], "created_at": user[3]}
+    raise HTTPException(status_code=404, detail="User not found")
 
 @router.put("/{user_id}")
-def update_user(user_id: str, user: User):
+def update_user(user_id: str, user_data: UserUpdate, current_user: dict = Depends(get_current_user)):
+    if current_user["id"] != user_id:
+        raise HTTPException(status_code=403, detail="Unauthorized to update this user")
+
     conn = connect_to_db()
-    if conn:
-        with conn.cursor() as cursor:
-            cursor.execute("""
-                UPDATE users 
-                SET username = %s, email = %s, password_hash = %s 
-                WHERE id = %s
-            """, (user.username, user.email, user.password_hash, user_id))
-            conn.commit()
-        conn.close()
-        return {"message": "User updated successfully"}
-    raise HTTPException(status_code=500, detail="Error updating user.")
+    if not conn:
+        raise HTTPException(status_code=500, detail="Database connection failed")
+
+    with conn.cursor() as cursor:
+        cursor.execute("""
+            UPDATE users 
+            SET username = %s, email = %s 
+            WHERE id = %s
+        """, (user_data.username, user_data.email, user_id))
+        conn.commit()
+    conn.close()
+
+    return {"message": "User updated successfully"}
 
 @router.delete("/{user_id}")
-def delete_user(user_id: str):
+def delete_user(user_id: str, current_user: dict = Depends(get_current_user)):
+    if current_user["id"] != user_id:
+        raise HTTPException(status_code=403, detail="Unauthorized to delete this user")
+
     conn = connect_to_db()
-    if conn:
-        with conn.cursor() as cursor:
-            cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
-            conn.commit()
-        conn.close()
-        return {"message": "User deleted successfully"}
-    raise HTTPException(status_code=500, detail="Error deleting user.")
+    if not conn:
+        raise HTTPException(status_code=500, detail="Database connection failed")
+
+    with conn.cursor() as cursor:
+        cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
+        conn.commit()
+    conn.close()
+
+    return {"message": "User deleted successfully"}
