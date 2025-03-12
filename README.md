@@ -35,9 +35,11 @@ pip install -r requirements.txt
 3️⃣ Set Up the Environment Variables
 Create a .env file in the project root and add:
 
-DATABASE_URL=postgresql://postgres:yourpassword@localhost/CrimsonDominion
-SECRET_KEY=your-secret-key
+DATABASE_URL=postgresql://postgres:MuschelSuppe1409@localhost/CrimsonDominion
+SECRET_KEY="EXAMPLE KEY"
+REFRESH_SECRET_KEY="EXAMPLE KEY"
 ACCESS_TOKEN_EXPIRE_MINUTES=60
+REFRESH_TOKEN_EXPIRE_DAYS=7
 
 4️⃣ Set Up the Database
 Run the following SQL script in PostgreSQL:
