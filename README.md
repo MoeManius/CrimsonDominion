@@ -112,6 +112,19 @@ CREATE INDEX idx_user_fleets_user_id ON user_fleets(user_id);
 CREATE INDEX idx_battles_attacker_id ON battles(attacker_id);
 CREATE INDEX idx_battles_defender_id ON battles(defender_id);
 
+ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS username VARCHAR(50) UNIQUE NOT NULL;
+
+ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS email VARCHAR(100) UNIQUE NOT NULL;
+
+ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS password_hash TEXT NOT NULL;
+
+ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+
 5️⃣ Run the Server
 uvicorn app.main:app --reload
 The API will be available at http://127.0.0.1:8000 🚀
