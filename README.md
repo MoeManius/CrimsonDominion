@@ -1,5 +1,5 @@
 # **Crimson Dominion - Backend API**  
-🚀 A FastAPI-based backend for **Crimson Dominion**, a strategic space empire game. This backend provides **authentication, user management, planets, battles, buildings, and more**.  
+A FastAPI-based backend for **Crimson Dominion**, a strategic space empire game. This backend provides **authentication, user management, planets, battles, buildings, and more**.  
 
 ## **📝 Features**  
 ✅ User authentication with **JWT** (Signup, Login, Logout, /me)  
@@ -21,7 +21,7 @@
 
 ---
 
-## **🚀 Setup Instructions**  
+## **🚀Setup Instructions**  
 
 ### **1️⃣ Clone the Repository**
 ```sh
