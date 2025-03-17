@@ -37,6 +37,9 @@ class TokenResponse(BaseModel):
     refresh_token: str
     token_type: str
 
+class RefreshTokenRequest(BaseModel):
+    refresh_token: str
+
 def create_access_token(user_id: str):
     expire = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     payload = {"sub": user_id, "exp": expire}
@@ -72,7 +75,6 @@ def get_current_user(token: str = Security(oauth2_scheme)):
         return {"id": str(user[0]), "username": user[1], "email": user[2]}
     raise HTTPException(status_code=401, detail="User not found")
 
-
 @router.post("/signup", response_model=TokenResponse)
 def signup(user: UserSignup):
     conn = connect_to_db()
@@ -103,11 +105,15 @@ def signup(user: UserSignup):
         finally:
             conn.close()
 
-        token = create_access_token(str(user_id))
-        return {"access_token": token, "token_type": "bearer"}
+        access_token = create_access_token(str(user_id))
+        refresh_token = create_refresh_token(str(user_id))
+        return {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "token_type": "bearer"
+        }
 
     raise HTTPException(status_code=500, detail="Database connection error")
-
 
 @router.post("/login", response_model=TokenResponse)
 def login(user: UserLogin):
@@ -121,15 +127,23 @@ def login(user: UserLogin):
         if db_user and bcrypt.checkpw(user.password.encode('utf-8'), db_user[1].encode('utf-8')):
             access_token = create_access_token(str(db_user[0]))
             refresh_token = create_refresh_token(str(db_user[0]))
-            return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
+            return {
+                "access_token": access_token,
+                "refresh_token": refresh_token,
+                "token_type": "bearer"
+            }
 
     raise HTTPException(status_code=401, detail="Invalid credentials")
 
 @router.post("/refresh", response_model=TokenResponse)
-def refresh_access_token(refresh_token: str):
-    user_id = decode_refresh_token(refresh_token)
+def refresh_access_token(request: RefreshTokenRequest):
+    user_id = decode_refresh_token(request.refresh_token)
     new_access_token = create_access_token(user_id)
-    return {"access_token": new_access_token, "refresh_token": refresh_token, "token_type": "bearer"}
+    return {
+        "access_token": new_access_token,
+        "refresh_token": request.refresh_token,
+        "token_type": "bearer"
+    }
 
 @router.get("/me")
 def get_me(current_user: dict = Depends(get_current_user)):
