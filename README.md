@@ -1,4 +1,4 @@
-# **Crimson Dominion - Backend API**  MVP COMPLETION STATUS: 70% ETA: 30.03.2025
+# **Crimson Dominion - Backend API**  
 🚀 A FastAPI-based backend for **Crimson Dominion**, a strategic space empire game. This backend provides **authentication, user management, planets, battles, buildings, and more**.  
 
 ## **📝 Features**  
