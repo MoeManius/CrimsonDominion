@@ -68,12 +68,27 @@ def decode_refresh_token(token: str):
     except jwt.DecodeError:
         raise HTTPException(status_code=401, detail="Invalid refresh token")
 
+
 def get_current_user(token: str = Security(oauth2_scheme)):
-    user_id = decode_access_token(token)
+    print(f"Received token: {token}")
+
+    try:
+        user_id = decode_access_token(token)
+        print(f"Decoded user ID: {user_id}")
+    except Exception as e:
+        print(f"Token decoding failed: {e}")
+        raise HTTPException(status_code=401, detail="Invalid token")
+
     user = get_user_by_id(user_id)
-    if user:
-        return {"id": str(user[0]), "username": user[1], "email": user[2]}
-    raise HTTPException(status_code=401, detail="User not found")
+
+    if user is None:
+        print(f"User not found in database for ID: {user_id}")
+        raise HTTPException(status_code=401, detail="User not found")
+
+    print(f"User found: {user}")
+
+    return {"id": str(user["id"]), "username": user["username"], "email": user["email"]}
+
 
 @router.post("/signup", response_model=TokenResponse)
 def signup(user: UserSignup):

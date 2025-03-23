@@ -18,23 +18,14 @@ def connect_to_db():
 
 
 def get_user_by_id(user_id: str):
-    try:
-        with connect_to_db() as conn:
-            with conn.cursor() as cursor:
-                cursor.execute(
-                    "SELECT id, username, email, password_hash FROM users WHERE id = %s", (user_id,)
-                )
-                user = cursor.fetchone()
+    conn = connect_to_db()
+    if conn:
+        conn.row_factory = psycopg.rows.dict_row
 
-        if user:
-            return {
-                "id": str(user[0]),
-                "username": user[1],
-                "email": user[2],
-                "password_hash": user[3],
-            }
-        else:
-            raise HTTPException(status_code=404, detail="User not found")
+        with conn.cursor() as cursor:
+            cursor.execute("SELECT id, username, email FROM users WHERE id = %s", (user_id,))
+            user = cursor.fetchone()
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching user: {str(e)}")
+        conn.close()
+        return user
+    return None
