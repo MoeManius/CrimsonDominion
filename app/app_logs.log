@@ -1,0 +1,57 @@
+2025-04-22 13:22:25,408 - DEBUG - Using proactor: IocpProactor
+2025-04-22 13:22:25,436 - INFO - \U0001f680 Crimson Dominion API has launched.
+2025-04-22 13:36:12,874 - DEBUG - Using proactor: IocpProactor
+2025-04-22 13:36:12,924 - INFO - \U0001f680 Crimson Dominion API has launched.
+2025-04-22 13:39:17,024 - DEBUG - Using proactor: IocpProactor
+2025-04-22 13:39:17,053 - INFO - \U0001f680 Crimson Dominion API has launched.
+2025-04-22 13:40:32,304 - DEBUG - Using proactor: IocpProactor
+2025-04-22 13:40:32,334 - INFO - \U0001f680 Crimson Dominion API has launched.
+2025-04-22 13:43:57,989 - DEBUG - Using proactor: IocpProactor
+2025-04-22 13:43:58,019 - INFO - \U0001f680 Crimson Dominion API has launched.
+2025-04-22 13:55:55,902 - DEBUG - Using proactor: IocpProactor
+2025-04-22 13:55:55,948 - INFO - \U0001f680 Crimson Dominion API has launched.
+2025-04-22 13:56:05,295 - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\perso\PycharmProjects\CrimsonDominion\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-04-22 13:56:05,299 - DEBUG - detected 'bcrypt' backend, version '<unknown>'
+2025-04-22 13:56:05,300 - DEBUG - 'bcrypt' backend lacks $2$ support, enabling workaround
+2025-04-22 13:57:01,120 - DEBUG - Using proactor: IocpProactor
+2025-04-22 13:57:01,154 - INFO - \U0001f680 Crimson Dominion API has launched.
+2025-04-22 13:57:49,997 - DEBUG - Using proactor: IocpProactor
+2025-04-22 13:57:50,035 - INFO - \U0001f680 Crimson Dominion API has launched.
+2025-04-22 14:02:01,594 - DEBUG - Using proactor: IocpProactor
+2025-04-22 14:02:01,625 - INFO - \U0001f680 Crimson Dominion API has launched.
+2025-04-22 14:04:56,965 - DEBUG - Using proactor: IocpProactor
+2025-04-22 14:04:56,998 - INFO - \U0001f680 Crimson Dominion API has launched.
+2025-04-22 14:11:08,024 - DEBUG - Using proactor: IocpProactor
+2025-04-22 14:11:08,076 - INFO - \U0001f680 Crimson Dominion API has launched.
+2025-04-22 16:31:12,145 - DEBUG - Using proactor: IocpProactor
+2025-04-22 16:31:12,206 - INFO - \U0001f680 Crimson Dominion API has launched.
+2025-04-22 16:33:29,523 | DEBUG | asyncio | Using proactor: IocpProactor
+2025-04-22 16:33:29,577 | INFO | crimson_dominion | \U0001f680 Crimson Dominion API has launched.
+2025-04-22 16:33:29,670 | INFO | crimson_dominion | \u2705 Database connection successful at startup.
+2025-04-22 16:33:46,727 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\perso\PycharmProjects\CrimsonDominion\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-04-22 16:33:46,732 | DEBUG | passlib.handlers.bcrypt | detected 'bcrypt' backend, version '<unknown>'
+2025-04-22 16:33:46,733 | DEBUG | passlib.handlers.bcrypt | 'bcrypt' backend lacks $2$ support, enabling workaround
+2025-04-22 16:43:33,047 | DEBUG | asyncio | Using proactor: IocpProactor
+2025-04-22 16:43:33,101 | INFO | crimson_dominion | \U0001f680 Crimson Dominion API has launched.
+2025-04-22 16:43:33,162 | INFO | crimson_dominion | \u2705 Database connection successful at startup.
+2025-04-23 11:09:20,731 | DEBUG | asyncio | Using proactor: IocpProactor
+2025-04-23 11:09:20,823 | INFO | crimson_dominion | \U0001f680 Crimson Dominion API has launched.
+2025-04-23 11:09:20,917 | INFO | crimson_dominion | \u2705 Database connection successful at startup.
+2025-04-23 11:09:24,401 | WARNING | passlib.handlers.bcrypt | (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "C:\Users\perso\PycharmProjects\CrimsonDominion\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2025-04-23 11:09:24,405 | DEBUG | passlib.handlers.bcrypt | detected 'bcrypt' backend, version '<unknown>'
+2025-04-23 11:09:24,406 | DEBUG | passlib.handlers.bcrypt | 'bcrypt' backend lacks $2$ support, enabling workaround
